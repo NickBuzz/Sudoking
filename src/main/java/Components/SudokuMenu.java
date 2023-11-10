@@ -17,7 +17,7 @@ public class SudokuMenu extends JPanel {
         buttons[0].setText("Difficulty");
         buttons[1].setText("New Game");
         buttons[2].setText("Validate");
-        buttons[3].setText("EXIT");
+        buttons[3].setText("Solve Game");
     }
 
     public void initializeUI(){
@@ -26,7 +26,7 @@ public class SudokuMenu extends JPanel {
 
         for (int i = 0; i < 4; i++) {
             JButton button = new JButton("");
-            button.setFont(new Font("Arial", Font.BOLD, 30));
+            button.setFont(new Font("Arial", Font.BOLD, 24));
             button.addActionListener(createButtonActionListener());
             button.addKeyListener(createButtonKeyListener());
             button.setBackground(new Color(124, 134, 145));
@@ -56,8 +56,16 @@ public class SudokuMenu extends JPanel {
                     case "Validate":
                         sudokuGrid.checkWin();
                         break;
-                    case "EXIT":
-                        System.out.println("Adios");
+                    case "Solve Game":
+                        int response = JOptionPane.showConfirmDialog(
+                                null,
+                                "Are you sure?",
+                                "Confirm",
+                                JOptionPane.YES_NO_OPTION
+                        );
+                        if (response == JOptionPane.YES_OPTION) {
+                            sudokuGrid.solveTable();
+                        }
                         break;
                 }
             }

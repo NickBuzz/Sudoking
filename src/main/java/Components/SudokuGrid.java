@@ -107,6 +107,17 @@ public class SudokuGrid extends JPanel {
         };
     }
 
+    public void solveTable(){
+        for (int i = 0; i < buttons.length; i++) {
+            for (int j = 0; j < buttons[i].length; j++) {
+                if (buttons[i][j].getText().isEmpty()){
+                    buttons[i][j].setForeground(colorNumber);
+                }
+                buttons[i][j].setText(String.valueOf(solvedBoard[i][j]));
+            }
+        }
+    }
+
     public void checkWin() {
         boolean error = false;
         for (int i = 0; i < buttons.length; i++) {
