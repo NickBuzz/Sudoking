@@ -3,17 +3,25 @@ package Components;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class SudokuMenu extends JPanel {
+
+    private final String[] difficulty = {"EASY", "NORMAL", "HARD"};
+    private int level;
 
     private final SudokuGrid sudokuGrid;
     private final JButton[] buttons;
     private final ButtonGroup buttonGroup;
     public SudokuMenu(SudokuGrid sudokuGrid){
+        level = 0;
         this.sudokuGrid = sudokuGrid;
         buttons = new JButton[5];
         buttonGroup = new ButtonGroup();
         initializeUI();
+
         buttons[0].setText("Difficulty");
         buttons[1].setText("New Game");
         buttons[2].setText("Validate");
@@ -48,10 +56,20 @@ public class SudokuMenu extends JPanel {
 
                 switch (sourceButton.getText()){
                     case "Difficulty":
-                        System.out.println("elija la dificultad");
+                        int selectedOption = JOptionPane.showOptionDialog(null,
+                                "Selecciona la dificultad:",
+                                "Dificultad",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                difficulty,
+                                difficulty[level]);
+                        System.out.println("selectedOption = " + selectedOption);
+                        if (selectedOption != -1) level = selectedOption;
+
                         break;
                     case "New Game":
-                        System.out.println("Juego nuevo");
+                        sudokuGrid.newGame(level+2);
                         break;
                     case "Validate":
                         sudokuGrid.checkWin();

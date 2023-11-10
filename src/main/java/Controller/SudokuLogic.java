@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class SudokuLogic {
 
-    public static int[][] fillSudokuBoard(JButton[][] toggleButtons) {
+    public static int[][] fillSudokuBoard(JButton[][] toggleButtons, int level) {
         Random random = new Random();
         int[][] solvedBoard = new int[9][9];
         createSudoku(solvedBoard);
@@ -14,7 +14,7 @@ public class SudokuLogic {
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 int randomNumber = solvedBoard[row][col];
-                if (random.nextInt(2) == 0) {
+                if (random.nextInt(level) == 0) {
                     toggleButtons[row][col].setText(String.valueOf(randomNumber));
                     //toggleButtons[row][col].setEnabled(false);
                     toggleButtons[row][col].setFocusable(false);

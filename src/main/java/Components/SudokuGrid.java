@@ -9,7 +9,7 @@ import java.awt.event.*;
 public class SudokuGrid extends JPanel {
     private final JButton[][] buttons;
     private final ButtonGroup buttonGroup;
-    private final int[][] solvedBoard;
+    private int[][] solvedBoard;
     private final Color colorNumber = new Color(0, 255, 0);
     private final Color colorHighlight = new Color(107, 115, 124);
 
@@ -23,10 +23,10 @@ public class SudokuGrid extends JPanel {
 
     public SudokuGrid() {
         buttons = new JButton[9][9];
+        solvedBoard = new int[9][9];
         buttonGroup = new ButtonGroup();
         initializeUI();
-        solvedBoard = SudokuLogic.fillSudokuBoard(buttons);
-        printSolvedBoard(solvedBoard);
+        newGame(2);
         SwingUtilities.invokeLater(this::requestFocusInWindow);
     }
 
@@ -107,6 +107,23 @@ public class SudokuGrid extends JPanel {
         };
     }
 
+    public void newGame(int level){
+        clearTable();
+        solvedBoard = SudokuLogic.fillSudokuBoard(buttons, level);
+
+    }
+
+    public void clearTable(){
+        for (int row = 0; row < buttons.length; row++) {
+            for (int col = 0; col < buttons.length; col++) {
+                buttons[row][col].setText("");
+                buttons[row][col].setFocusable(true);
+                buttons[row][col].setForeground(Color.BLACK);
+                solvedBoard[row][col] = 0;
+            }
+        }
+    }
+
     public void solveTable(){
         for (int i = 0; i < buttons.length; i++) {
             for (int j = 0; j < buttons[i].length; j++) {
@@ -137,7 +154,6 @@ public class SudokuGrid extends JPanel {
         }
 
         if (!error) {
-            // Verifica si el sudoku está completo
             boolean incomplete = false;
             for (int i = 0; i < buttons.length; i++) {
                 for (int j = 0; j < buttons[i].length; j++) {
@@ -152,34 +168,31 @@ public class SudokuGrid extends JPanel {
             }
 
             if (incomplete) {
-                // Sudoku incompleto, pero sin errores hasta el momento
-                JOptionPane.showMessageDialog(null, "Vas por buen camino, pero aún no has completado el Sudoku.");
+                JOptionPane.showMessageDialog(null, "U are doing grate, keep playing");
             } else {
-                // Sudoku completo y sin errores
-                JOptionPane.showMessageDialog(null, "¡Felicidades! Has ganado el Sudoku.");
+                JOptionPane.showMessageDialog(null, "Congrats!! u won the game");
             }
         } else {
-            // Se encontró un error
-            JOptionPane.showMessageDialog(null, "Hay un error en el Sudoku. Intenta de nuevo.");
+            JOptionPane.showMessageDialog(null, "Something looks wrong");
         }
     }
 
-    private boolean findCoordinate(JButton button) {
-        int row = -1;
-        int col = -1;
-
-        outerloop:
-        for (int i = 0; i < buttons.length; i++) {
-            for (int j = 0; j < buttons[0].length; j++) {
-                if (buttons[i][j] == button) {
-                    row = i;
-                    col = j;
-                    break outerloop;
-                }
-            }
-        }
-        return solvedBoard[row][col] == Integer.parseInt(button.getText());
-    }
+//    private boolean findCoordinate(JButton button) {
+//        int row = -1;
+//        int col = -1;
+//
+//        outerloop:
+//        for (int i = 0; i < buttons.length; i++) {
+//            for (int j = 0; j < buttons[0].length; j++) {
+//                if (buttons[i][j] == button) {
+//                    row = i;
+//                    col = j;
+//                    break outerloop;
+//                }
+//            }
+//        }
+//        return solvedBoard[row][col] == Integer.parseInt(button.getText());
+//    }
 
     public void highlightNumber(JButton button) {
         for (int row = 0; row < buttons.length; row++) {
@@ -220,12 +233,12 @@ public class SudokuGrid extends JPanel {
         }
     }
 
-    public void printSolvedBoard(int[][] board) {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                System.out.print(board[i][j] + " - ");
-            }
-            System.out.println();
-        }
-    }
+//    public void printSolvedBoard(int[][] board) {
+//        for (int i = 0; i < 9; i++) {
+//            for (int j = 0; j < 9; j++) {
+//                System.out.print(board[i][j] + " - ");
+//            }
+//            System.out.println();
+//        }
+//    }
 }
