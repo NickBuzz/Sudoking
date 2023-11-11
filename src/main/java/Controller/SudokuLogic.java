@@ -10,15 +10,31 @@ public class SudokuLogic {
         int[][] solvedBoard = new int[9][9];
         createSudoku(solvedBoard);
 
-        // Llena el tablero de la GUI y elimina algunos números
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-                int randomNumber = solvedBoard[row][col];
-                if (random.nextInt(level) == 0) {
-                    toggleButtons[row][col].setText(String.valueOf(randomNumber));
-                    //toggleButtons[row][col].setEnabled(false);
-                    toggleButtons[row][col].setFocusable(false);
+        // Contador de casillas marcadas
+        int markedCount = 0;
 
+        // Marcar al menos 17 casillas
+        while (markedCount < 17) {
+            int row = random.nextInt(9);
+            int col = random.nextInt(9);
+
+            if (toggleButtons[row][col].getText().isEmpty()) {
+                int number = solvedBoard[row][col];
+                toggleButtons[row][col].setText(String.valueOf(number));
+                toggleButtons[row][col].setFocusable(false);
+                markedCount++;
+            }
+        }
+
+        // Marcar otras casillas según el nivel de dificultad
+        if (level != 12) {
+            for (int row = 0; row < 9; row++) {
+                for (int col = 0; col < 9; col++) {
+                    if (toggleButtons[row][col].getText().isEmpty() && random.nextInt(level) == 0) {
+                        int number = solvedBoard[row][col];
+                        toggleButtons[row][col].setText(String.valueOf(number));
+                        toggleButtons[row][col].setFocusable(false);
+                    }
                 }
             }
         }

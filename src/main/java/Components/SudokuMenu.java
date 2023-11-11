@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class SudokuMenu extends JPanel {
 
-    private final String[] difficulty = {"EASY", "NORMAL", "HARD"};
+    private final String[] difficulty = {"EASY", "NORMAL", "HARD", "EXPERT"};
     private int level;
 
     private final SudokuGrid sudokuGrid;
@@ -69,7 +69,7 @@ public class SudokuMenu extends JPanel {
 
                         break;
                     case "New Game":
-                        sudokuGrid.newGame(level+2);
+                        sudokuGrid.newGame((level+1)*3);
                         break;
                     case "Validate":
                         sudokuGrid.checkWin();
