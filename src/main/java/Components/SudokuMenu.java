@@ -8,16 +8,17 @@ public class SudokuMenu extends JPanel {
 
     private final String[] difficulty = {"EASY", "NORMAL", "HARD", "EXPERT"};
     private int level;
-
     private final SudokuGrid sudokuGrid;
     private final JButton[] buttons;
     private final ButtonGroup buttonGroup;
+
     public SudokuMenu(SudokuGrid sudokuGrid){
+        setLayout(new GridLayout(4,1));
         level = 0;
         this.sudokuGrid = sudokuGrid;
         buttons = new JButton[5];
         buttonGroup = new ButtonGroup();
-        initializeUI();
+        buildButtons();
 
         buttons[0].setText("Difficulty");
         buttons[1].setText("New Game");
@@ -25,10 +26,7 @@ public class SudokuMenu extends JPanel {
         buttons[3].setText("Solve Game");
     }
 
-    public void initializeUI(){
-        //setSize(100,500);
-        setLayout(new GridLayout(4,1));
-
+    public void buildButtons(){
         for (int i = 0; i < 4; i++) {
             JButton button = new JButton("");
             button.setFont(new Font("Arial", Font.BOLD, 24));
@@ -36,12 +34,11 @@ public class SudokuMenu extends JPanel {
             button.addKeyListener(createButtonKeyListener());
             button.setBackground(new Color(124, 134, 145));
             button.setForeground(Color.BLACK);
-            //button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+            button.setFocusable(false);
             buttons[i] = button;
             buttonGroup.add(button);
             add(button);
         }
-
     }
 
     private ActionListener createButtonActionListener() {
@@ -91,8 +88,6 @@ public class SudokuMenu extends JPanel {
         return new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-
-
             }
         };
     }

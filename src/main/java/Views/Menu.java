@@ -14,7 +14,7 @@ public class Menu extends JFrame {
 
     private void initializeUI() {
         setTitle("SUDOKING");
-        setSize(735,660);
+        setSize(735,610);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new GridLayout(1,1));

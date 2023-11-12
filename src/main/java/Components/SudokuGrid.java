@@ -9,11 +9,13 @@ import java.awt.event.*;
 public class SudokuGrid extends JPanel {
     private final JButton[][] buttons;
     private final ButtonGroup buttonGroup;
+    private JButton clickedButton;
     private int[][] solvedBoard;
     private final Color colorNumber = new Color(0, 255, 0);
     private final Color colorHighlight = new Color(77, 95, 110);
 
     public SudokuGrid() {
+        clickedButton = new JButton();
         buttons = new JButton[9][9];
         solvedBoard = new int[9][9];
         buttonGroup = new ButtonGroup();
@@ -21,7 +23,6 @@ public class SudokuGrid extends JPanel {
         newGame(2);
         SwingUtilities.invokeLater(this::requestFocusInWindow);
     }
-
     private void initializeUI() {
         //setSize(500,500);
         setLayout(new GridLayout(3, 3));
@@ -58,15 +59,16 @@ public class SudokuGrid extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                JButton clickedButton = (JButton) e.getSource();
+                JButton clickB = (JButton) e.getSource();
                 // Lógica del botón presionado
+                clickedButton = clickB;
 
                 outerLoop:
                 for (int row = 0; row < 9; row++) {
                     for (int col = 0; col < 9; col++) {
-                        if (buttons[row][col] == clickedButton) {
+                        if (buttons[row][col] == clickB) {
                             highlight(row, col);
-                            highlightNumber(clickedButton);
+                            highlightNumber(clickB);
                             break outerLoop;
                         }
                     }
@@ -112,6 +114,8 @@ public class SudokuGrid extends JPanel {
     }
 
     public void newGame(int level){
+        requestFocus();
+        clickedButton = null;
         clearTable();
         clearHighlights();
         solvedBoard = SudokuLogic.fillSudokuBoard(buttons, level);
@@ -218,6 +222,14 @@ public class SudokuGrid extends JPanel {
                     buttons[row][col].setBackground(new Color(124, 134, 145));
             }
         }
+    }
+
+    public JButton[][] getButtons() {
+        return buttons;
+    }
+
+    public JButton getClickedButton() {
+        return clickedButton;
     }
 
 //    public void printSolvedBoard(int[][] board) {
