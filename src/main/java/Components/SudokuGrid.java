@@ -3,6 +3,7 @@ package Components;
 import Controller.SudokuLogic;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -11,8 +12,9 @@ public class SudokuGrid extends JPanel {
     private final ButtonGroup buttonGroup;
     private JButton clickedButton;
     private int[][] solvedBoard;
-    private final Color colorNumber = new Color(0, 255, 0);
-    private final Color colorHighlight = new Color(77, 95, 110);
+    private final Color colorNumber = new Color(26, 233, 253);
+    private final Color BG = new Color(124, 134, 145);
+    private final Color colorHighlight = new Color(94, 104, 115);
 
     public SudokuGrid() {
         clickedButton = new JButton();
@@ -24,27 +26,23 @@ public class SudokuGrid extends JPanel {
         SwingUtilities.invokeLater(this::requestFocusInWindow);
     }
     private void initializeUI() {
-        //setSize(500,500);
         setLayout(new GridLayout(3, 3));
-        setBackground(Color.BLACK);
-        //setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 JPanel subPanel = new JPanel(new GridLayout(3, 3));  // Subpanel para cada área de 3x3
-                subPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+                subPanel.setBorder(new BevelBorder(BevelBorder.RAISED));
                 add(subPanel);
 
                 for (int row = i * 3; row < i * 3 + 3; row++) {
                     for (int col = j * 3; col < j * 3 + 3; col++) {
 
                         JButton button = new JButton("");
-                        button.setFont(new Font("Arial", Font.BOLD, 30));
+                        button.setFont(new Font("Arial Black", Font.PLAIN, 25));
                         button.addActionListener(createButtonActionListener());
                         button.addKeyListener(createButtonKeyListener());
-                        button.setBackground(new Color(124, 134, 145));
+                        button.setBackground(BG);
                         button.setForeground(Color.BLACK);
-                        //button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
                         buttons[row][col] = button;
                         buttonGroup.add(button);
                         subPanel.add(button);
@@ -55,22 +53,17 @@ public class SudokuGrid extends JPanel {
     }
 
     private ActionListener createButtonActionListener() {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        return e -> {
 
-                JButton clickB = (JButton) e.getSource();
-                // Lógica del botón presionado
-                clickedButton = clickB;
-
-                outerLoop:
-                for (int row = 0; row < 9; row++) {
-                    for (int col = 0; col < 9; col++) {
-                        if (buttons[row][col] == clickB) {
-                            highlight(row, col);
-                            highlightNumber(clickB);
-                            break outerLoop;
-                        }
+            JButton clickB = (JButton) e.getSource();
+            clickedButton = clickB;
+            outerLoop:
+            for (int row = 0; row < 9; row++) {
+                for (int col = 0; col < 9; col++) {
+                    if (buttons[row][col] == clickB) {
+                        highlight(row, col);
+                        highlightNumber(clickB);
+                        break outerLoop;
                     }
                 }
             }
@@ -88,8 +81,6 @@ public class SudokuGrid extends JPanel {
                     if (sourceButton.getText().isEmpty() || sourceButton.getForeground().equals(colorNumber)) {
                         sourceButton.setText(String.valueOf(typedChar));
                         sourceButton.setForeground(colorNumber);
-
-
                         outerLoop:
                         for (int row = 0; row < 9; row++) {
                             for (int col = 0; col < 9; col++) {
@@ -101,7 +92,6 @@ public class SudokuGrid extends JPanel {
                                 }
                             }
                         }
-
                     }
                 } else if (typedChar == KeyEvent.VK_BACK_SPACE || typedChar == KeyEvent.VK_DELETE) {
                     if (sourceButton.getForeground().equals(colorNumber)) {
@@ -164,9 +154,9 @@ public class SudokuGrid extends JPanel {
 
         if (!error) {
             boolean incomplete = false;
-            for (int i = 0; i < buttons.length; i++) {
-                for (int j = 0; j < buttons[i].length; j++) {
-                    if (buttons[i][j].getText().isEmpty()) {
+            for (JButton[] button : buttons) {
+                for (JButton jButton : button) {
+                    if (jButton.getText().isEmpty()) {
                         incomplete = true;
                         break;
                     }
@@ -177,20 +167,20 @@ public class SudokuGrid extends JPanel {
             }
 
             if (incomplete) {
-                JOptionPane.showMessageDialog(null, "U are doing grate, keep playing");
+                JOptionPane.showMessageDialog(null, "U are doing grate, keep playing","",JOptionPane.PLAIN_MESSAGE,null);
             } else {
-                JOptionPane.showMessageDialog(null, "Congrats!! u won the game");
+                JOptionPane.showMessageDialog(null, "Congrats!! u won the game","",JOptionPane.PLAIN_MESSAGE,null);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Something looks wrong");
+            JOptionPane.showMessageDialog(null, "Something looks wrong","",JOptionPane.PLAIN_MESSAGE,null);
         }
     }
 
     public void highlightNumber(JButton button) {
-        for (int row = 0; row < buttons.length; row++) {
-            for (int col = 0; col < buttons[row].length; col++) {
-                if (button.getText().equals(buttons[row][col].getText()) && !button.getText().isEmpty())
-                    buttons[row][col].setBackground(colorHighlight);
+        for (JButton[] jButtons : buttons) {
+            for (JButton jButton : jButtons) {
+                if (button.getText().equals(jButton.getText()) && !button.getText().isEmpty())
+                    jButton.setBackground(colorHighlight);
             }
         }
     }
@@ -216,10 +206,9 @@ public class SudokuGrid extends JPanel {
     }
 
     public void clearHighlights() {
-        for (int row = 0; row < buttons.length; row++) {
-            for (int col = 0; col < buttons[row].length; col++) {
-                if (!buttons[row][col].getBackground().equals(Color.RED))
-                    buttons[row][col].setBackground(new Color(124, 134, 145));
+        for (JButton[] button : buttons) {
+            for (JButton jButton : button) {
+                jButton.setBackground(BG);
             }
         }
     }
@@ -231,13 +220,4 @@ public class SudokuGrid extends JPanel {
     public JButton getClickedButton() {
         return clickedButton;
     }
-
-//    public void printSolvedBoard(int[][] board) {
-//        for (int i = 0; i < 9; i++) {
-//            for (int j = 0; j < 9; j++) {
-//                System.out.print(board[i][j] + " - ");
-//            }
-//            System.out.println();
-//        }
-//    }
 }
