@@ -21,7 +21,7 @@ public class SudokuLogic {
             if (toggleButtons[row][col].getText().isEmpty()) {
                 int number = solvedBoard[row][col];
                 toggleButtons[row][col].setText(String.valueOf(number));
-                toggleButtons[row][col].setFocusable(false);
+                //toggleButtons[row][col].setFocusable(false);
                 markedCount++;
             }
         }
@@ -33,7 +33,7 @@ public class SudokuLogic {
                     if (toggleButtons[row][col].getText().isEmpty() && random.nextInt(level) == 0) {
                         int number = solvedBoard[row][col];
                         toggleButtons[row][col].setText(String.valueOf(number));
-                        toggleButtons[row][col].setFocusable(false);
+                        //toggleButtons[row][col].setFocusable(false);
                     }
                 }
             }

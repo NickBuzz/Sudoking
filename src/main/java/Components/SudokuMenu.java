@@ -3,9 +3,6 @@ package Components;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class SudokuMenu extends JPanel {
 

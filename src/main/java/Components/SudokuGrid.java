@@ -11,15 +11,7 @@ public class SudokuGrid extends JPanel {
     private final ButtonGroup buttonGroup;
     private int[][] solvedBoard;
     private final Color colorNumber = new Color(0, 255, 0);
-    private final Color colorHighlight = new Color(107, 115, 124);
-
-    public JButton[][] getButtons() {
-        return buttons;
-    }
-
-    public int[][] getSolvedBoard() {
-        return solvedBoard;
-    }
+    private final Color colorHighlight = new Color(77, 95, 110);
 
     public SudokuGrid() {
         buttons = new JButton[9][9];
@@ -68,15 +60,11 @@ public class SudokuGrid extends JPanel {
 
                 JButton clickedButton = (JButton) e.getSource();
                 // Lógica del botón presionado
-                int row = -1, col = -1;
 
                 outerLoop:
-                for (int i = 0; i < 9; i++) {
-                    for (int j = 0; j < 9; j++) {
-                        if (buttons[i][j] == clickedButton) {
-                            row = i;
-                            col = j;
-
+                for (int row = 0; row < 9; row++) {
+                    for (int col = 0; col < 9; col++) {
+                        if (buttons[row][col] == clickedButton) {
                             highlight(row, col);
                             highlightNumber(clickedButton);
                             break outerLoop;
@@ -94,14 +82,30 @@ public class SudokuGrid extends JPanel {
                 char typedChar = e.getKeyChar();
                 JButton sourceButton = (JButton) e.getSource();
 
-                if (Character.isDigit(typedChar) && typedChar != '0' && sourceButton.isFocusable()) {
-                    sourceButton.setText(String.valueOf(typedChar));
-                    sourceButton.setForeground(colorNumber);
-                    //highlightNumber(sourceButton);
+                if (Character.isDigit(typedChar) && typedChar != '0') {
+                    if (sourceButton.getText().isEmpty() || sourceButton.getForeground().equals(colorNumber)) {
+                        sourceButton.setText(String.valueOf(typedChar));
+                        sourceButton.setForeground(colorNumber);
 
+
+                        outerLoop:
+                        for (int row = 0; row < 9; row++) {
+                            for (int col = 0; col < 9; col++) {
+                                if (buttons[row][col] == sourceButton) {
+                                    clearHighlights();
+                                    highlight(row, col);
+                                    highlightNumber(sourceButton);
+                                    break outerLoop;
+                                }
+                            }
+                        }
+
+                    }
                 } else if (typedChar == KeyEvent.VK_BACK_SPACE || typedChar == KeyEvent.VK_DELETE) {
-                    sourceButton.setText("");
-                    sourceButton.setBackground(Color.GRAY);
+                    if (sourceButton.getForeground().equals(colorNumber)) {
+                        sourceButton.setText("");
+
+                    }
                 }
             }
         };
@@ -109,6 +113,7 @@ public class SudokuGrid extends JPanel {
 
     public void newGame(int level){
         clearTable();
+        clearHighlights();
         solvedBoard = SudokuLogic.fillSudokuBoard(buttons, level);
 
     }
@@ -177,28 +182,11 @@ public class SudokuGrid extends JPanel {
         }
     }
 
-//    private boolean findCoordinate(JButton button) {
-//        int row = -1;
-//        int col = -1;
-//
-//        outerloop:
-//        for (int i = 0; i < buttons.length; i++) {
-//            for (int j = 0; j < buttons[0].length; j++) {
-//                if (buttons[i][j] == button) {
-//                    row = i;
-//                    col = j;
-//                    break outerloop;
-//                }
-//            }
-//        }
-//        return solvedBoard[row][col] == Integer.parseInt(button.getText());
-//    }
-
     public void highlightNumber(JButton button) {
         for (int row = 0; row < buttons.length; row++) {
             for (int col = 0; col < buttons[row].length; col++) {
                 if (button.getText().equals(buttons[row][col].getText()) && !button.getText().isEmpty())
-                    if (!buttons[row][col].getBackground().equals(Color.RED)) buttons[row][col].setBackground(colorHighlight);
+                    buttons[row][col].setBackground(colorHighlight);
             }
         }
     }
@@ -207,21 +195,20 @@ public class SudokuGrid extends JPanel {
         clearHighlights();
         // Resalta la fila
         for (int i = 0; i < 9; i++) {
-            if (!buttons[i][col].getBackground().equals(Color.RED)) buttons[i][col].setBackground(colorHighlight);
+            buttons[i][col].setBackground(colorHighlight);
         }
         // Resalta la columna
         for (int j = 0; j < 9; j++) {
-            if (!buttons[row][j].getBackground().equals(Color.RED)) buttons[row][j].setBackground(colorHighlight);
+            buttons[row][j].setBackground(colorHighlight);
         }
         // Resalta la zona 3x3
         int startRow = row - row % 3;
         int startCol = col - col % 3;
         for (int i = startRow; i < startRow + 3; i++) {
             for (int j = startCol; j < startCol + 3; j++) {
-                if (!buttons[i][j].getBackground().equals(Color.RED)) buttons[i][j].setBackground(colorHighlight);
+                buttons[i][j].setBackground(colorHighlight);
             }
         }
-        if (!buttons[row][col].getBackground().equals(Color.RED)) buttons[row][col].setBackground(new Color(78, 83, 93));
     }
 
     public void clearHighlights() {
