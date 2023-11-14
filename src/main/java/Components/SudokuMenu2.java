@@ -4,8 +4,6 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Objects;
 
 public class SudokuMenu2 extends JPanel {
@@ -40,25 +38,6 @@ public class SudokuMenu2 extends JPanel {
         erase.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/Return.png"))));
     }
 
-    private KeyListener createButtonKeyListener() {
-        return new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        };
-    }
-
 
     private ActionListener createButtonActionListener() {
         return e -> {
@@ -72,8 +51,11 @@ public class SudokuMenu2 extends JPanel {
                     for (int col = 0; col < 9; col++) {
                         if (tableButtons[row][col] == sudokuGrid.getClickedButton() && !clickedButton.getForeground().equals(Color.BLACK)) {
                             tableButtons[row][col].setText("");
+                            marks.clearMarksInCell(row,col);
                         }
-                        marks.clearMarksInCell(row,col);
+                        if (tableButtons[row][col] == sudokuGrid.getClickedButton()){
+                            marks.clearMarksInCell(row,col);
+                        }
                     }
                 }
             }

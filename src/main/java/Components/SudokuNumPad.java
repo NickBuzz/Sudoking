@@ -1,7 +1,6 @@
 package Components;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -65,12 +64,14 @@ public class SudokuNumPad extends JPanel {
                 for (int row = 0; row < 9; row++) {
                     for (int col = 0; col < 9; col++) {
                         if (tableButtons[row][col] == clickedButton) {
+                            int mark = Integer.parseInt(sourceButton.getText())-1;
                             if (!sudokuGrid.isPencilMark()) {
                                 if (clickedButton.getText().isEmpty() || clickedButton.getForeground().equals(COLOR_F)) {
                                     tableButtons[row][col].setText(sourceButton.getText());
                                     tableButtons[row][col].setForeground(COLOR_F);
                                 }
                                 marks.clearMarksInCell(row,col);
+                                marks.clearMarks(row,col,mark);
                                 sudokuGrid.clearHighlights();
                                 sudokuGrid.highlight(row, col);
                                 sudokuGrid.highlightNumber(clickedButton);
@@ -78,7 +79,7 @@ public class SudokuNumPad extends JPanel {
                                 break outerLoop;
                             }else{
                                 if (clickedButton.getText().isEmpty()){
-                                    int mark = Integer.parseInt(sourceButton.getText())-1;
+
                                     marks.setMarksInCell(row,col,mark);
                                 }
                             }

@@ -5,7 +5,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class SudokuMarks extends JPanel {
-    private JLabel[][][] grid;
+    private final JLabel[][][] grid;
     private final Color TC = new Color(0,0,0,0);
     public static final Font FONT = new Font("Arial", Font.BOLD, 15);
     public SudokuMarks() {
@@ -68,6 +68,45 @@ public class SudokuMarks extends JPanel {
         }
         repaint();
     }
+
+    public void clearAllMarks(){
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                for (int k = 0; k < 9; k++) {
+                    grid[i][j][k].setText("");
+                }
+            }
+        }
+        repaint();
+    }
+
+    public void clearMarks(int row, int col,int mark){
+        clearMarksInRow(row,mark);
+        clearMarksInCol(col,mark);
+        clearMarksInBox(row, col,mark);
+        repaint();
+    }
+
+    public void clearMarksInRow(int row, int mark){
+        for (int col = 0; col < 9; col++) {
+            grid[row][col][mark].setText("");
+        }
+    }
+    public void clearMarksInCol(int col, int mark){
+        for (int row = 0; row < 9; row++) {
+            grid[row][col][mark].setText("");
+        }
+    }
+    public void clearMarksInBox(int row, int col, int mark){
+        int startRow = row - row % 3;
+        int startCol = col - col % 3;
+        for (int i = startRow; i < startRow + 3; i++) {
+            for (int j = startCol; j < startCol + 3; j++) {
+                grid[i][j][mark].setText("");
+            }
+        }
+    }
+
 
     public void setMarkDimension(Dimension gridDimension) {
         setSize(gridDimension);
