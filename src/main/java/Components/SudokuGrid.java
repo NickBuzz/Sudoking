@@ -1,13 +1,13 @@
 package Components;
 
 import Controller.SudokuLogic;
-import Views.SudokuDashboard;
-
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class SudokuGrid extends JPanel {
     private final JButton[][] buttons;
@@ -87,17 +87,18 @@ public class SudokuGrid extends JPanel {
                         for (int row = 0; row < 9; row++) {
                             for (int col = 0; col < 9; col++) {
                                 if (buttons[row][col] == sourceButton) {
+                                    int mark = Integer.parseInt(String.valueOf(typedChar))-1;
                                     if (!pencilMark) {
                                         sourceButton.setText(String.valueOf(typedChar));
                                         sourceButton.setForeground(colorNumber);
                                         clearHighlights();
                                         marks.clearMarksInCell(row, col);
+                                        marks.clearMarks(row,col,mark);
                                         highlight(row, col);
                                         highlightNumber(sourceButton);
                                         break outerLoop;
                                     }else {
                                         if (sourceButton.getText().isEmpty()) {
-                                            int mark = Integer.parseInt(String.valueOf(typedChar))-1;
                                             marks.setMarksInCell(row,col,mark);
                                         }
                                     }
@@ -120,6 +121,7 @@ public class SudokuGrid extends JPanel {
         clickedButton = null;
         clearTable();
         clearHighlights();
+        marks.clearAllMarks();
         solvedBoard = SudokuLogic.fillSudokuBoard(buttons, level);
 
     }
