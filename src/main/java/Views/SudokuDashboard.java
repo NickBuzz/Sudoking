@@ -1,56 +1,74 @@
 package Views;
 
-import Components.SudokuGrid;
-import Components.SudokuMenu;
-import Components.SudokuNumPad;
+import Components.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class SudokuDashboard extends JPanel {
 
     private final SudokuGrid sudokuGrid;
-    private final LineBorder BORDER = new LineBorder(Color.cyan,2,true);
+    private final SudokuMarks marks;
+    //private final LineBorder BORDER = new LineBorder(Color.cyan,2,true);
     SudokuDashboard(){
-        sudokuGrid = new SudokuGrid();
+        marks = new SudokuMarks();
+        sudokuGrid = new SudokuGrid(marks);
         initializeUI();
     }
 
     private void initializeUI(){
-        setLayout(null);
-        JPanel grid = new JPanel();
+        setLayout(new BorderLayout());
+        JLayeredPane grid = new JLayeredPane();
+        JPanel panelMenu = new JPanel();
         JPanel menu1 = new JPanel();
         JPanel menu2 = new JPanel();
         JPanel numPad = new JPanel();
 
-        grid.setSize(450,450);
-        grid.setLocation(20,20);
-        grid.setBorder(BORDER);
-        grid.setLayout(new GridLayout(1,1));
-        grid.add(sudokuGrid);
+        grid.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                changeGridDimension(e.getComponent().getSize());
+            }
+        });
+        grid.add(sudokuGrid, JLayeredPane.DEFAULT_LAYER);
+        grid.add(marks, JLayeredPane.PALETTE_LAYER);
 
-        menu1.setSize(200,300);
-        menu1.setLocation(500,20);
-        menu1.setBorder(BORDER);
+
+        menu1.setBorder(BorderFactory.createEmptyBorder(50, 10, 10, 10));
         menu1.setLayout(new GridLayout(1,1));
         menu1.add(new SudokuMenu(sudokuGrid));
 
-        menu2.setSize(200,200);
-        menu2.setLocation(500,350);
-        menu2.setBorder(BORDER);
+
+        menu2.setBorder(BorderFactory.createEmptyBorder(0, 10, 60, 10));
+        menu2.setLayout(new GridLayout(1,1));
+        menu2.add(new SudokuMenu2(sudokuGrid, marks));
 
 
-        numPad.setSize(450,50);
-        numPad.setLocation(20,500);
-        numPad.setBorder(BORDER);
+        numPad.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 170));
         numPad.setLayout(new GridLayout(1,1));
-        numPad.add(new SudokuNumPad(sudokuGrid));
+        numPad.add(new SudokuNumPad(sudokuGrid, marks));
 
 
-        add(grid);
-        add(menu1);
-        add(menu2);
-        add(numPad);
+        panelMenu.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        panelMenu.setLayout(new BorderLayout());
+        panelMenu.add(menu1,BorderLayout.NORTH);
+        panelMenu.add(menu2,BorderLayout.SOUTH);
+
+        add(grid, BorderLayout.CENTER);
+        add(panelMenu, BorderLayout.EAST);
+        add(numPad, BorderLayout.SOUTH);
+    }
+
+    private void changeGridDimension(Dimension dimension){
+        sudokuGrid.setGridDimension(dimension);
+        marks.setMarkDimension(dimension);
+        revalidate();
+        repaint();
     }
 }

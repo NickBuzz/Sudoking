@@ -1,9 +1,11 @@
 package Components;
 
 import Controller.SudokuLogic;
+import Views.SudokuDashboard;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -12,11 +14,15 @@ public class SudokuGrid extends JPanel {
     private final ButtonGroup buttonGroup;
     private JButton clickedButton;
     private int[][] solvedBoard;
+    private final SudokuMarks marks;
+    private boolean pencilMark;
+
     private final Color colorNumber = new Color(26, 233, 253);
     private final Color BG = new Color(124, 134, 145);
     private final Color colorHighlight = new Color(94, 104, 115);
-
-    public SudokuGrid() {
+    public SudokuGrid(SudokuMarks marks) {
+        this.marks = marks;
+        pencilMark = false;
         clickedButton = new JButton();
         buttons = new JButton[9][9];
         solvedBoard = new int[9][9];
@@ -27,11 +33,10 @@ public class SudokuGrid extends JPanel {
     }
     private void initializeUI() {
         setLayout(new GridLayout(3, 3));
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                JPanel subPanel = new JPanel(new GridLayout(3, 3));  // Subpanel para cada área de 3x3
-                subPanel.setBorder(new BevelBorder(BevelBorder.RAISED));
+                JPanel subPanel = new JPanel(new GridLayout(3, 3));
+                subPanel.setBorder(new LineBorder(Color.black,3,true));
                 add(subPanel);
 
                 for (int row = i * 3; row < i * 3 + 3; row++) {
@@ -69,26 +74,33 @@ public class SudokuGrid extends JPanel {
             }
         };
     }
-
     private KeyListener createButtonKeyListener() {
         return new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 char typedChar = e.getKeyChar();
                 JButton sourceButton = (JButton) e.getSource();
-
                 if (Character.isDigit(typedChar) && typedChar != '0') {
                     if (sourceButton.getText().isEmpty() || sourceButton.getForeground().equals(colorNumber)) {
-                        sourceButton.setText(String.valueOf(typedChar));
-                        sourceButton.setForeground(colorNumber);
+
                         outerLoop:
                         for (int row = 0; row < 9; row++) {
                             for (int col = 0; col < 9; col++) {
                                 if (buttons[row][col] == sourceButton) {
-                                    clearHighlights();
-                                    highlight(row, col);
-                                    highlightNumber(sourceButton);
-                                    break outerLoop;
+                                    if (!pencilMark) {
+                                        sourceButton.setText(String.valueOf(typedChar));
+                                        sourceButton.setForeground(colorNumber);
+                                        clearHighlights();
+                                        marks.clearMarksInCell(row, col);
+                                        highlight(row, col);
+                                        highlightNumber(sourceButton);
+                                        break outerLoop;
+                                    }else {
+                                        if (sourceButton.getText().isEmpty()) {
+                                            int mark = Integer.parseInt(String.valueOf(typedChar))-1;
+                                            marks.setMarksInCell(row,col,mark);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -219,5 +231,17 @@ public class SudokuGrid extends JPanel {
 
     public JButton getClickedButton() {
         return clickedButton;
+    }
+
+    public boolean isPencilMark() {
+        return pencilMark;
+    }
+
+    public void setPencilMark(boolean pencilMark) {
+        this.pencilMark = pencilMark;
+    }
+
+    public void setGridDimension(Dimension gridDimension) {
+        setSize(gridDimension);
     }
 }

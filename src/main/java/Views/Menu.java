@@ -18,7 +18,7 @@ public class Menu extends JFrame {
     private void initializeUI() {
         setTitle("SUDOKING");
         setSize(735,610);
-        setResizable(false);
+        //setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new GridLayout(1,1));
         setLocationRelativeTo(null);
@@ -43,7 +43,7 @@ public class Menu extends JFrame {
         UIManager.put("TitlePane.closeHoverBackground", LINE);
         UIManager.put("TitlePane.closePressedBackground", LINE);
         UIManager.put("TitlePane.font", FONT);
-        UIManager.put("TitlePane.centerTitle", true);
+        //UIManager.put("TitlePane.centerTitle", true);
 
         UIManager.put("OptionPane.background", BG);
         UIManager.put("OptionPane.messageFont", FONT);

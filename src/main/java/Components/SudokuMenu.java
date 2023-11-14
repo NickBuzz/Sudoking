@@ -2,6 +2,7 @@ package Components;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -20,10 +21,9 @@ public class SudokuMenu extends JPanel {
         this.sudokuGrid = sudokuGrid;
         buttons = new JButton[5];
         buttonGroup = new ButtonGroup();
-        setBorder(new BevelBorder(BevelBorder.RAISED));
         buildButtons();
 
-        buttons[0].setText("Difficulty");
+        buttons[0].setText("<html><center>Difficulty<br/>(" + difficulty[level] + ")<center></html>");
         buttons[1].setText("New Game");
         buttons[2].setText("Validate");
         buttons[3].setText("Solve Game");
@@ -37,6 +37,7 @@ public class SudokuMenu extends JPanel {
             button.addKeyListener(createButtonKeyListener());
             button.setBackground(BG);
             button.setForeground(Color.BLACK);
+            button.setBorder(new LineBorder(Color.cyan,1,false));
             button.setFocusable(false);
             buttons[i] = button;
             buttonGroup.add(button);
@@ -46,11 +47,14 @@ public class SudokuMenu extends JPanel {
 
     private ActionListener createButtonActionListener() {
         return e -> {
-
+            int index = -1;
             JButton sourceButton = (JButton) e.getSource();
+            for (int i = 0; i < buttons.length; i++) {
+                if (buttons[i] == sourceButton) index = i;
+            }
 
-            switch (sourceButton.getText()){
-                case "Difficulty":
+            switch (index){
+                case 0:
                     int selectedOption = JOptionPane.showOptionDialog(null,
                             "Select difficulty:",
                             "",
@@ -59,17 +63,20 @@ public class SudokuMenu extends JPanel {
                             null,
                             difficulty,
                             difficulty[level]);
-                    System.out.println("selectedOption = " + selectedOption);
-                    if (selectedOption != -1) level = selectedOption;
+
+                    if (selectedOption != -1){
+                        level = selectedOption;
+                        buttons[0].setText("<html><center>Difficulty<br/>(" + difficulty[level] + ")<center></html>");
+                    }
 
                     break;
-                case "New Game":
+                case 1:
                     sudokuGrid.newGame((level+1)*3);
                     break;
-                case "Validate":
+                case 2:
                     sudokuGrid.checkWin();
                     break;
-                case "Solve Game":
+                case 3:
                     int response = JOptionPane.showConfirmDialog(
                             null,
                             "  Are you sure?",
