@@ -154,6 +154,7 @@ public class SudokuGrid extends JPanel {
                 buttons[i][j].setText(String.valueOf(solvedBoard[i][j]));
             }
         }
+        marks.clearAllMarks();
     }
 
     public void checkWin() {
