@@ -1,6 +1,8 @@
 # Sudoking
 My own project to test my skills and becouse i love table games.
 
+![image](https://github.com/NickBuzz/Sudoking/assets/123810242/2b74a335-8514-455f-8b72-49ebd47bc86f)
+
 
 Description:
 
@@ -17,9 +19,10 @@ Pencil Marks: To aid in strategic planning, players can use pencil marks, a feat
 ScreenShots:
 
 
-![image](https://github.com/NickBuzz/Sudoking/assets/123810242/5f704eb9-4442-43de-bae0-33669a1ff236)
-![image](https://github.com/NickBuzz/Sudoking/assets/123810242/bd2ba232-17e9-41f2-b4f2-b3aeadd5d5d5)
-![image](https://github.com/NickBuzz/Sudoking/assets/123810242/724e6801-39c2-4744-b718-bedff77728a4)
+![image](https://github.com/NickBuzz/Sudoking/assets/123810242/4770646d-8830-426a-a751-3fb42a51a9ff)
+![image](https://github.com/NickBuzz/Sudoking/assets/123810242/2fc78525-e378-4ede-8cd1-079f7c2481ef)
+
+
 
 
 Technical Features:
