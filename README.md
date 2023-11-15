@@ -1,5 +1,5 @@
 # Sudoking
-My own project to test my skills and becouse i love table games.
+My new project made to test my skills and because I love board games!
 
 ![image](https://github.com/NickBuzz/Sudoking/assets/123810242/2b74a335-8514-455f-8b72-49ebd47bc86f)
 
