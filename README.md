@@ -15,6 +15,8 @@ On-Screen Numeric Keypad: Enhancing user experience, the game incorporates an on
 Pencil Marks: To aid in strategic planning, players can use pencil marks, a feature that allows the temporary notation of possible numbers, facilitating a more methodical approach to solving puzzles.
 
 ScreenShots:
+
+
 ![image](https://github.com/NickBuzz/Sudoking/assets/123810242/5f704eb9-4442-43de-bae0-33669a1ff236)
 ![image](https://github.com/NickBuzz/Sudoking/assets/123810242/bd2ba232-17e9-41f2-b4f2-b3aeadd5d5d5)
 ![image](https://github.com/NickBuzz/Sudoking/assets/123810242/724e6801-39c2-4744-b718-bedff77728a4)
