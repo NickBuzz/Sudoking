@@ -19,7 +19,6 @@ Pencil Marks: To aid in strategic planning, players can use pencil marks, a feat
 ScreenShots:
 
 
-![image](https://github.com/NickBuzz/Sudoking/assets/123810242/4770646d-8830-426a-a751-3fb42a51a9ff)
 ![image](https://github.com/NickBuzz/Sudoking/assets/123810242/2fc78525-e378-4ede-8cd1-079f7c2481ef)
 
 
